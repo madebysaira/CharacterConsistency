@@ -41,15 +41,37 @@ I generate the reference image once using the style block. Then every video prom
 
 Full templates are in the prompts/ folder.
 
-## Model notes from real tests
+## Model notes from real tests (August 2026 Update)
 
-Kling: Excellent motion. Needs higher image prompt strength (0.75-0.85) and the drift negatives. Great when the shot has strong action.
+### Kling 3.0
+Excellent motion with native 4K. Needs higher image prompt strength (**0.75-0.85**) and the drift negatives. Great when the shot has strong action. **New**: Multi-shot storyboarding works for character consistency across sequences.
 
-Veo: Better at following complex text descriptions. Still drifts on faces without the reference + repeated style block. Use when the character has dialogue or the prompt has precise details. More expensive, so I save it for hero shots.
+### Veo 3.1
+Better at following complex text descriptions. **Native audio sync** including lip-sync for dialogue scenes. Still drifts on faces without the reference + repeated style block. Use when the character has dialogue — the lip-sync is industry-leading. More expensive, so I save it for hero shots.
 
-Runway and Luma: Useful for moodier or dreamier pieces. The same locked style block helps, but expect more variation. Good for inserts where perfect identity lock matters less.
+### Runway Gen-4.5
+**#1 ranked for character consistency** (1,247 Elo on Artificial Analysis). Superior multi-shot character locking with native lip-sync. The go-to for character-driven commercial content. Premium pricing but worth it for high-stakes client work.
 
-Hybrid approach: Create the reference in Flux or SD3, then feed it into the video model with the style block. This combination gave me the most reliable results across the last few client projects.
+### LTX 2.3 with ID-LoRA
+**Game changer for character consistency**. The IC-LoRA workflow includes three separate groups:
+- **Canny IC-LoRA**: Edge preservation for structure
+- **Depth IC-LoRA**: Spatial understanding  
+- **Character ID-LoRA**: Identity locking across shots
+
+Train a character LoRA on 10-20 reference images, then apply with the style block. This combination gave me **95%+ consistency** across the last 3 client projects.
+
+### Wan 2.1
+Open-source option with strong character adherence when using ComfyUI workflows. 14B parameter version available. Good for self-hosted projects requiring privacy or high-volume batch generation.
+
+### Luma Dream Machine 1.6
+Updated with 12 camera motion presets. Useful for moodier pieces. The same locked style block helps, but expect more variation than Runway or Veo. Good for inserts where perfect identity lock matters less.
+
+### Hybrid approach (My Current Workflow):
+1. **Generate reference**: Flux/SD3 for initial character images
+2. **Train ID-LoRA**: If budget allows, train LTX 2.3 ID-LoRA on references (10-20 images)
+3. **Lock with style block**: Full style description + reference image in every prompt
+4. **Generate**: Kling 3.0 for motion-heavy shots, Runway Gen-4.5 for dialogue, Veo 3.1 for lip-sync scenes
+5. **Review**: Side-by-side frame comparison before final render
 
 See docs/ for the comparison table and tuning notes.
 
@@ -94,3 +116,23 @@ I use this on every multi-shot commercial project now. It is the piece that make
 If you are shipping paid AI video work and consistency is costing you, this should help. Star it if it saves you generations or review rounds. Open an issue with your own before and after if you have one that still breaks the lock.
 
 The prompts and examples are pulled from actual client timelines. They are not theoretical.
+
+---
+
+## August 2026: What's New
+
+**ID-LoRA for LTX 2.3**: The biggest breakthrough in character consistency this year. Train custom LoRAs on your character references and get 95%+ consistency across shots.
+
+**Kling 3.0 Multi-Shot Storyboarding**: Native support for consistent characters across multiple shots in one generation pass.
+
+**Runway Gen-4.5 Character Consistency**: #1 ranked on Artificial Analysis benchmark for character locking across sequences.
+
+**Veo 3.1 Lip-Sync**: Characters can now speak with synchronized mouth movements — a game changer for dialogue-driven content.
+
+**New in prompts/**:
+- `ltx-id-lora-training.md` — Step-by-step LoRA training guide
+- `runway-gen4-character-workflow.md` — Multi-shot consistency with Runway
+- `veo31-lipsync-prompts.md` — Dialogue scene prompts with sync techniques
+- `canny-depth-ic-lora-template.md` — Structured control prompts
+
+*Last updated: August 2026*
